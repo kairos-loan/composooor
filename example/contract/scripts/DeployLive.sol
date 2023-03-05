@@ -30,14 +30,14 @@ contract DeployLive is Script {
         flashLender = new FlashLender(wEth);
         marketPlace = new MarketPlace(wEth);
         nft = new MockNFT(address(marketPlace));
-        wallet = new SmartContractWallet(wEth, address(buyNowPayLater));
         buyNowPayLater = new BuyNowPayLater(kairos, flashLender, marketPlace, nft, wEth);
+        wallet = new SmartContractWallet(wEth, address(buyNowPayLater));
 
         wEth.transfer(address(flashLender), 100_000 ether);
         wEth.transfer(address(wallet), 100_000 ether);
         wEth.transfer(address(kairos), 100_000 ether);
         wEth.transfer(address(wallet), 100_000 ether);
-        nft.approve(address(marketPlace), 1);
+        nft.transferFrom(msg.sender, 0x5C1C78D652e3427408DC2ED1fD84bD927C8d3fF2, 1);
         
         vm.stopBroadcast();
 
