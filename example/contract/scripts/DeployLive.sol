@@ -12,8 +12,6 @@ import "../contracts/MockNFT.sol";
 import "../contracts/SmartContractWallet.sol";
 
 contract DeployLive is Script {
-    uint testPKey = uint256(bytes32(hex"ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"));
-    uint testPKey2 = uint256(bytes32(hex"59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"));
     MockWeth wEth;
     BuyNowPayLater buyNowPayLater;
     FakeKairos kairos;
