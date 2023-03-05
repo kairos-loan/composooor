@@ -31,32 +31,16 @@ contract DeployLive is Script {
         kairos = new FakeKairos(wEth);
         flashLender = new FlashLender(wEth);
         marketPlace = new MarketPlace(wEth);
-        nft = new MockNFT();
-
-        vm.stopBroadcast();
-        vm.startBroadcast(testPKey2);
-        wallet = new SmartContractWallet();
-        vm.stopBroadcast();
-        vm.startBroadcast(testPKey);
-
+        nft = new MockNFT(address(marketPlace));
+        wallet = new SmartContractWallet(wEth, address(buyNowPayLater));
         buyNowPayLater = new BuyNowPayLater(kairos, flashLender, marketPlace, nft, wEth);
+
         wEth.transfer(address(flashLender), 100_000 ether);
         wEth.transfer(address(wallet), 100_000 ether);
         wEth.transfer(address(kairos), 100_000 ether);
         wEth.transfer(address(wallet), 100_000 ether);
         nft.approve(address(marketPlace), 1);
-        vm.stopBroadcast();
-        vm.startBroadcast(testPKey2);
-        {
-            Call[] memory calls = new Call[](1);
-            Call memory approvalCall = Call({
-                callee: address(wEth),
-                functionSelector: wEth.approve.selector,
-                data: abi.encode(address(buyNowPayLater), uint256(1 ether))
-            });
-            calls[0] = approvalCall;
-            wallet.execute(calls);
-        }
+        
         vm.stopBroadcast();
 
         toWrite = addEnv(toWrite, "VITE_WETH", vm.toString(address(wEth)));
